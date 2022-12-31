@@ -2,7 +2,9 @@ package com.tldrandroid.rxjavamasterclass.ui.navigation
 
 object Destinations {
     const val HOME = "home"
-    val LESSONS: List<LessonScreen> = listOf()
+    val LESSONS: List<LessonScreen> = listOf(
+        LessonScreen("Completables, Singles, Maybes", "completables-singles-maybes")
+    )
 
     //////////////////////////////
 
