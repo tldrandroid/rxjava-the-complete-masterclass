@@ -19,44 +19,35 @@ import com.tldrandroid.rxjavamasterclass.ui.navigation.Destinations
 import com.tldrandroid.rxjavamasterclass.ui.navigation.LessonScreen
 import com.tldrandroid.rxjavamasterclass.ui.theme.RxJavaTheCompleteMasterclassTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
+@ExperimentalMaterial3Api
 fun Home(
     onButtonTap: (String) -> Unit,
     destinations: List<LessonScreen>
 ) {
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = { Text(text = "RxJava Masterclass") }
-            )
-        }
-    ) { contentPadding ->
-        Box(modifier = Modifier.padding(contentPadding)) {
-            LazyColumn {
-                items(destinations) { lesson ->
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp)
-                    ) {
-                        Button(
-                            onClick = { onButtonTap(lesson.route) },
-                            modifier = Modifier
-                                .align(Alignment.Center)
-                                .fillMaxWidth(0.8f)
-                        ) {
-                            Text(lesson.name)
-                        }
-                    }
+    LazyColumn {
+        items(destinations) { lesson ->
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                Button(
+                    onClick = { onButtonTap(lesson.route) },
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .fillMaxWidth(0.8f)
+                ) {
+                    Text(lesson.name)
                 }
             }
         }
     }
 }
 
-@Preview(showBackground = true)
 @Composable
+@Preview(showBackground = true)
+@ExperimentalMaterial3Api
 fun PreviewHome() {
     RxJavaTheCompleteMasterclassTheme {
         Home(

@@ -8,17 +8,29 @@ import com.tldrandroid.rxjavamasterclass.utils.TaskConfig
 import java.util.concurrent.Executors
 import javax.inject.Inject
 
-class CompletableTask @Inject constructor() {
+class MaybeTask @Inject constructor() {
     private val handler = Handler(Looper.getMainLooper())
 
-    fun doTaskAlwaysComplete(onComplete: () -> Unit) {
+    fun doTaskAlwaysSuccess(onSuccess: (String) -> Unit) {
         val executor = Executors.newSingleThreadExecutor()
 
         executor.execute {
             Thread.sleep(RandomGenerator.sleepTime())
 
             handler.post {
-                onComplete()
+                onSuccess("I definitely finished :)")
+            }
+        }
+    }
+
+    fun doTaskAlwaysSuccessWithNull(onSuccess: (String?) -> Unit) {
+        val executor = Executors.newSingleThreadExecutor()
+
+        executor.execute {
+            Thread.sleep(RandomGenerator.sleepTime())
+
+            handler.post {
+                onSuccess(null)
             }
         }
     }
@@ -35,7 +47,7 @@ class CompletableTask @Inject constructor() {
         }
     }
 
-    fun doTaskSometimesComplete(onComplete: () -> Unit, onError: (Throwable) -> Unit) {
+    fun doTaskSometimesSuccess(onSuccess: (String?) -> Unit, onError: (Throwable) -> Unit) {
         val executor = Executors.newSingleThreadExecutor()
         val random = RandomGenerator.nextFloat()
 
@@ -46,7 +58,13 @@ class CompletableTask @Inject constructor() {
                 if (random > TaskConfig.SUCCESS_RATIO) {
                     onError(GenericThrowable)
                 } else {
-                    onComplete()
+                    val randomAgain = RandomGenerator.nextFloat()
+
+                    if (randomAgain > TaskConfig.SUCCESS_RATIO) {
+                        onSuccess(null)
+                    } else {
+                        onSuccess("I finished this time. :)")
+                    }
                 }
             }
         }
